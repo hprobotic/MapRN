@@ -30,3 +30,12 @@ by rearranging the letters of a different word or phrase) from the text box abov
 - [x] The views should run in any screen size is a plus.
 - [x] Design your apps to close as much as your production code is a plus.
 
+## Run:
+
+- Clone this project git clone https://github.com/hprobotic/MapRN
+- Run `npm install` from root directory
+- Run `react-native run-ios` or `react-native run-android` inside folder, you should see your new app running in the iOS Simulator shortly
+
+## Demo:
+
+Video walkthrough: https://www.youtube.com/watch?v=MIEnMNbXxw0&feature=youtu.be
