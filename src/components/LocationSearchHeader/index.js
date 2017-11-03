@@ -14,7 +14,6 @@ import {
 import PropTypes from 'prop-types';
 import * as Animatable from 'react-native-animatable';
 import styles from './styles';
-import GooglePlacesInput from '../GooglePlacesInput';
 
 const transitionProps = {
   hoverbar: ['top', 'left', 'height', 'width', 'shadowRadius'],
@@ -27,12 +26,7 @@ const transitionProps = {
   dot: ['top', 'left', 'opacity'],
 }
 
-
 const SQUARE_SIZE = 6
-const AnimatableTouchable = Animatable.createAnimatableComponent(TouchableWithoutFeedback)
-const FROM_FIELD = 'from'
-const TO_FIELD = 'to'
-
 class LocationSearchHeader extends Component {
   constructor(props) {
     super(props)
