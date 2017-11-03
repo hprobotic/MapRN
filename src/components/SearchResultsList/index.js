@@ -1,21 +1,25 @@
+/**
+ * @flow
+ */
 import React, { Component } from 'react'
-import { ListView, View, Text, StyleSheet } from 'react-native'
-
+import {
+  FlatList,
+  View,
+  Text,
+  StyleSheet } from 'react-native'
+import Reactotron from 'reactotron-react-native';
 import SearchResultsRow from '../SearchResultsRow'
 
-// Row comparison function
-const rowHasChanged = (r1, r2) => r1.id !== r2.id
-
-// DataSource template object
-const ds = new ListView.DataSource({rowHasChanged})
-
 export default class SearchResultsList extends Component {
+  _keyExtractor = (item, index) => item.id;
+  componentWillReceiveProps = nextProps => this.forceUpdateComponents(nextProps.list);
 
-  state = {
-    dataSource: ds.cloneWithRows(this.props.list),
+  forceUpdateComponents = (list) => {
+    this.setState({
+    })
   }
 
-  renderSeparator = (sectionID, rowID) => {
+  _renderSeparator = (sectionID, rowID) => {
     return (
       <View
         key={rowID}
@@ -24,25 +28,32 @@ export default class SearchResultsList extends Component {
     )
   }
 
-  renderRow = (rowData) => {
-    const {title, subtitle, icon} = rowData
-
+  _renderItem = ({ item }) => {
+    const {name, vicinity, icon, id} = item
     return (
       <SearchResultsRow
-        title={title}
-        subtitle={subtitle}
+        title={name}
+        subtitle={vicinity}
         icon={icon}
+        onPressItem={this._onPresseItem}
+        id={id}
       />
     )
   }
 
+  _onPresseItem = (id: string) => {
+    this.props.onLocationSelectedAt(id)
+  }
+
   render() {
+    const { list } = this.props;
     return (
-      <ListView
+      <FlatList
         style={styles.container}
-        dataSource={this.state.dataSource}
-        renderRow={this.renderRow}
-        renderSeparator={this.renderSeparator}
+        data={list}
+        renderItem={this._renderItem}
+        extraData={this.state}
+        ItemSeparatorComponent={this._renderSeparator}
       />
     )
   }
@@ -59,7 +70,7 @@ const styles = StyleSheet.create({
   },
   separator: {
     flex: 1,
-    height: 2,
+    height: 1,
     backgroundColor: '#EDEDED',
   }
 })

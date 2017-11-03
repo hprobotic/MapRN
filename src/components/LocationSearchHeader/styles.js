@@ -39,25 +39,30 @@ const baseStyle = _.extend(BaseStyles.general, {
     borderRadius: 4,
     zIndex: 3,
   },
+  fromBox: {
+    position: 'absolute',
+    borderRadius: 4,
+    zIndex: 3,
+    backgroundColor: '#F9F9F9',
+  },
+  actionBox: {
+    position: 'absolute',
+    zIndex: 3,
+  },
   destinationText: {
     position: 'absolute',
     zIndex: 4,
     backgroundColor: 'transparent',
+    fontSize: 14,
     fontFamily: Fonts.base,
   },
-  sourceText: {
+  fromText: {
     position: 'absolute',
-    zIndex: 4,
+    zIndex: 3,
     color: '#525760',
     backgroundColor: 'transparent',
-    fontFamily: Fonts.base,
     fontSize: 15,
-  },
-  sourceBox: {
-    position: 'absolute',
-    backgroundColor: '#F9F9F9',
-    borderRadius: 4,
-    zIndex: 3,
+    fontFamily: Fonts.base,
   },
   verticalBar: {
     position: 'absolute',
@@ -70,10 +75,22 @@ const baseStyle = _.extend(BaseStyles.general, {
     flex: 1,
     color: 'black',
     backgroundColor: 'transparent',
-    zIndex: 10,
-    fontSize: 15,
+    zIndex: 13,
+    fontSize: 14,
     fontFamily: Fonts.base,
     paddingHorizontal: 10,
+  },
+  goButton: {
+    backgroundColor: '#3D9FC6',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 4,
+  },
+  goButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 

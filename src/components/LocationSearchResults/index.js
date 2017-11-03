@@ -13,10 +13,10 @@ export default class LocationSearchHeader extends Component {
   render() {
     const {visible, onPress, children} = this.props
     const {width: windowWidth, height: windowHeight} = Dimensions.get('window')
-
+    const top = 170
     const style = {
-      top: visible ? 136 : windowHeight,
-      height: windowHeight,
+      top: visible ? top : windowHeight,
+      height: windowHeight-top,
       width: windowWidth,
     }
 

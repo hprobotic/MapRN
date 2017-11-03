@@ -1,23 +1,34 @@
 import React, { Component } from 'react'
-import { View, Text, Image, StyleSheet } from 'react-native'
-import Icon from 'react-native-vector-icons/Ionicons';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default class SearchResultsRow extends Component {
 
   static defaultProps = {
     icon: 'home',
     title: 'Home',
-    subtitle: 'Earth'
+    subtitle: 'Earth',
+    id: 'id'
+  }
+  _onPress = () => {
+    this.props.onPressItem(this.props.id);
   }
 
   render() {
-    const {icon, title, subtitle} = this.props
-
+    const {title, subtitle} = this.props
     return (
-      <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.container}
+        onPress={this._onPress}
+      >
         <View style={styles.iconContainer}>
           <Icon
-            name={"ios-timer-outline"}
+            name={"map-marker-outline"}
             style={styles.icon}
           />
         </View>
@@ -29,7 +40,7 @@ export default class SearchResultsRow extends Component {
             {subtitle}
           </Text>
         </View>
-      </View>
+      </TouchableOpacity>
     )
   }
 }
@@ -38,7 +49,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 25,
-    height: 56,
+    minHeight: 56,
     flexDirection: 'row',
   },
   iconContainer: {

@@ -2,10 +2,9 @@
  * @flow
  */
 import React, { Component } from 'react';
-import {
-  View,
-  Image,
-} from 'react-native';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import Reactotron from 'reactotron-react-native';
 import { GooglePlacesAutocomplete } from '../GooglePlacesAutocomplete';
 import appConfig from '../../appConfig';
 
@@ -15,14 +14,30 @@ const workPlace = { description: 'Work', geometry: { location: { lat: 48.8496818
 class GooglePlacesInput extends Component {
   constructor(props) {
     super(props);
+    this.state = ({
+      locationsResult: [
+        {
+          id: 0, icon: 'home', title: 'Home', subtitle: '123 Spear St, San Francisco',
+        },
+        {
+          id: 1, icon: 'home', title: 'Home', subtitle: '123 Spear St, San Francisco',
+        },
+        {
+          id: 2, icon: 'home', title: 'Home', subtitle: '123 Spear St, San Francisco',
+        },
+      ],
+    });
   }
+
+  componentDidMount() {
+    Reactotron.log(this.state.locationsResult);
+  }
+
   render() {
-    const { value } = this.props;
-    console.log(this.props);
     return (
       <GooglePlacesAutocomplete
         setAddressText="destinationInput"
-        placeholder={""}
+        placeholder=""
         minLength={2}
         autoFocus={false}
         returnKeyType="search"
@@ -65,19 +80,26 @@ class GooglePlacesInput extends Component {
             marginLeft: 0,
             fontSize: 15,
             paddingHorizontal: 10,
-          }
+          },
         }}
         currentLocationLabel="Current location"
         nearbyPlacesAPI="GooglePlacesSearch"
-        filterReverseGeocodingByTypes={['street_number', 'route', 'locality' , 'street_address', 'park']}
+        filterReverseGeocodingByTypes={['street_number', 'route', 'locality', 'street_address', 'park']}
         predefinedPlaces={[homePlace, workPlace]}
         debounce={200}
         textInputProps={{
-          onChangeText: (text) => this.props.onChangeText(text),
+          onChangeText: text => this.props.onChangeText(text),
         }}
       />
     );
   }
 }
 
-export default GooglePlacesInput;
+GooglePlacesInput.propTypes = ({
+  locationsResult: PropTypes.array,
+});
+
+const mapStateToProps = state => ({
+  locationsResult: state.locationsResult,
+});
+export default connect(mapStateToProps)(GooglePlacesInput);
