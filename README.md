@@ -6,6 +6,11 @@ display it to the google map.
 - Math screen is using for resolving the math problems.
 
 
+## Demo:
+
+Video walkthrough: [Watch on Youtube](https://www.youtube.com/watch?v=MIEnMNbXxw0&feature=youtu.be)
+
+[![Alt text](https://i9.ytimg.com/vi_webp/MIEnMNbXxw0/maxresdefault.webp?sqp=CKCS8s8F&rs=AOn4CLAMsApMG9FqWSfjVsXxK_2OKg_5rA)](ttps://www.youtube.com/watch?v=MIEnMNbXxw0&feature=youtu.be)
 
 ## Requirements
 
@@ -36,6 +41,4 @@ by rearranging the letters of a different word or phrase) from the text box abov
 - Run `npm install` from root directory
 - Run `react-native run-ios` or `react-native run-android` inside folder, you should see your new app running in the iOS Simulator shortly
 
-## Demo:
 
-Video walkthrough: https://www.youtube.com/watch?v=MIEnMNbXxw0&feature=youtu.be
