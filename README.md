@@ -10,7 +10,7 @@ display it to the google map.
 
 Video walkthrough: [Watch on Youtube](https://www.youtube.com/watch?v=MIEnMNbXxw0&feature=youtu.be)
 
-[![Alt text](https://i9.ytimg.com/vi_webp/MIEnMNbXxw0/maxresdefault.webp?sqp=CKCS8s8F&rs=AOn4CLAMsApMG9FqWSfjVsXxK_2OKg_5rA)](ttps://www.youtube.com/watch?v=MIEnMNbXxw0&feature=youtu.be)
+[![Alt text](https://i.imgur.com/wMVSXFR.jpg)](ttps://www.youtube.com/watch?v=MIEnMNbXxw0&feature=youtu.be)
 
 ## Requirements
 
