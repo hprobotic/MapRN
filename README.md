@@ -8,9 +8,9 @@ display it to the google map.
 
 ## Demo:
 
-Video walkthrough: [Watch on Youtube](https://www.youtube.com/watch?v=MIEnMNbXxw0&feature=youtu.be)
+Video walkthrough: [Watch on Youtube](https://youtu.be/d3pqEbZj8GM)
 
-[![Alt text](https://i.imgur.com/wMVSXFR.jpg)](ttps://www.youtube.com/watch?v=MIEnMNbXxw0&feature=youtu.be)
+[![Alt text](https://i.imgur.com/wMVSXFR.jpg)](https://youtu.be/d3pqEbZj8GM)
 
 ## Requirements
 
