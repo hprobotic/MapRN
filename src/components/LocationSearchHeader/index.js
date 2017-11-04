@@ -18,9 +18,9 @@ import styles from './styles';
 const transitionProps = {
   hoverbar: ['top', 'left', 'height', 'width', 'shadowRadius'],
   square: ['top', 'left'],
-  destinationBox: ['left', 'height', 'opacity'],
+  toBox: ['left', 'height', 'opacity'],
   fromBox: ['top', 'opacity'],
-  destinationText: ['top', 'left', 'fontSize', 'color', 'opacity'],
+  toText: ['top', 'left', 'fontSize', 'color', 'opacity'],
   fromText: ['top', 'opacity'],
   verticalBar: ['top', 'left', 'opacity'],
   dot: ['top', 'left', 'opacity'],
@@ -34,7 +34,7 @@ class LocationSearchHeader extends Component {
   static defaultProps = {
     expanded: false,
     onFromTextChange: () => {},
-    onDestinationTextChange: () => {},
+    onToTextChange: () => {},
     focusedOn: null
   }
 
@@ -49,10 +49,18 @@ class LocationSearchHeader extends Component {
     onFromTextChange(fromText)
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.focusing === 'toInput') {
+      setTimeout(() => {
+        if (!this.refs.toInput) return
+        this.refs.toInput.focus()
+      }, 350)
+    }
+  }
 
-  onDestinationTextChange = (destinationText) => {
-    const {onDestinationTextChange} = this.props
-    onDestinationTextChange(destinationText)
+  onToTextChange = (toText) => {
+    const {onToTextChange} = this.props
+    onToTextChange(toText)
   }
 
   onExpand = () => {
@@ -69,7 +77,7 @@ class LocationSearchHeader extends Component {
   }
 
   getAnimatableStyles = () => {
-    const {expanded, destinationText} = this.props
+    const {expanded, toText} = this.props
     const {width: windowWidth} = Dimensions.get('window')
     const width = windowWidth - 24 * 2
 
@@ -85,7 +93,7 @@ class LocationSearchHeader extends Component {
         top: expanded ? 109 : 96 + 56 / 2 - SQUARE_SIZE / 2,
         left: expanded ? 29 : 24 + 22,
       },
-      destinationBox: {
+      toBox: {
         left: expanded ? 56 : 24,
         right: 24,
         top: 96,
@@ -99,12 +107,12 @@ class LocationSearchHeader extends Component {
         height: expanded ? 32 : 56,
         opacity: expanded ? 1 : 0,
       },
-      destinationText: {
+      toText: {
         left: expanded ? 65 : 75,
         top: expanded ? 103 : 112,
         fontSize: expanded ? 14 : 18,
         color: expanded ? '#A4A4AC' : '#525760',
-        opacity: (expanded && destinationText.length !== 0) ? 0 : 1,
+        opacity: (expanded && toText.length !== 0) ? 0 : 1,
       },
       fromBox: {
         left: 56,
@@ -132,12 +140,12 @@ class LocationSearchHeader extends Component {
   }
 
   _onFocused = (text) => {
-    this.props.focusingOn(text)
+    this.props.onChangeFocus(text)
   }
 
 
   render() {
-    const {expanded, fromText, destinationText, onFindDirection} = this.props
+    const {expanded, fromText, toText, onFindDirection} = this.props
     const animatableStyles = this.getAnimatableStyles()
     return (
       <View style={styles.container}>
@@ -153,11 +161,11 @@ class LocationSearchHeader extends Component {
           {fromText.length === 0 ? 'From?' : fromText}
         </Animatable.Text>
         <Animatable.Text
-          style={[styles.destinationText, animatableStyles.destinationText]}
-          transition={transitionProps.destinationText}
+          style={[styles.toText, animatableStyles.toText]}
+          transition={transitionProps.toText}
           pointerEvents={'none'}
         >
-          {destinationText.length === 0 ? 'Where to?' : destinationText}
+          {toText.length === 0 ? 'Where to?' : toText}
         </Animatable.Text>
         <Animatable.View
           style={[styles.fromBox, animatableStyles.fromBox]}
@@ -178,16 +186,16 @@ class LocationSearchHeader extends Component {
           )}
         </Animatable.View>
         <Animatable.View
-          style={[styles.destinationBox, animatableStyles.destinationBox]}
-          transition={transitionProps.destinationBox}
+          style={[styles.toBox, animatableStyles.toBox]}
+          transition={transitionProps.toBox}
           pointerEvents={'box-none'}
         >
           {expanded && (
             <TextInput
-              ref="destinationInput"
+              ref="toTexInput"
               style={styles.input}
-              value={destinationText}
-              onChangeText={this.onDestinationTextChange}
+              value={toText}
+              onChangeText={this.onToTextChange}
               clearButtonMode="while-editing"
               onFocus={() => {
                 this._onFocused('to')
@@ -197,7 +205,7 @@ class LocationSearchHeader extends Component {
         </Animatable.View>
         <Animatable.View
           style={[styles.actionBox, animatableStyles.actionBox]}
-          transition={transitionProps.destinationBox}
+          transition={transitionProps.toBox}
           pointerEvents={'box-none'}
         >
           {expanded && (

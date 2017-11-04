@@ -33,7 +33,7 @@ const baseStyle = _.extend(BaseStyles.general, {
     backgroundColor: '#A4A4AC',
     zIndex: 2,
   },
-  destinationBox: {
+  toBox: {
     position: 'absolute',
     backgroundColor: '#EDEDED',
     borderRadius: 4,
@@ -49,7 +49,7 @@ const baseStyle = _.extend(BaseStyles.general, {
     position: 'absolute',
     zIndex: 3,
   },
-  destinationText: {
+  toText: {
     position: 'absolute',
     zIndex: 4,
     backgroundColor: 'transparent',

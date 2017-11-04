@@ -10,15 +10,18 @@ const baseStyle = _.extend(BaseStyles.general, {
   mainMapView: {
     flex: 1,
     zIndex: -1,
-    backgroundColor: 'blue'
+    backgroundColor: 'blue',
   },
   bottomAction: {
     position: 'absolute',
     bottom: 10,
     left: 10,
     right: 10,
-    height: 40
-  }
+    height: 40,
+  },
+  draggablePicker: {
+    zIndex: 90
+  },
 });
 
 export default styles = StyleSheet.create(baseStyle);

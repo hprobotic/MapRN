@@ -9,6 +9,7 @@ const Types = {
   GET_DIRECTION: 'GET_DIRECTION',
   CLEAR_RESULTS: 'CLEAR_RESULTS',
   GET_LOCATION_BY_GEO: 'GET_LOCATION_BY_GEO',
+  CLEAR_POSITION: 'CLEAR_POSITION',
   CLEAR_ALL_LOCATION_DATA: 'CLEAR_ALL_LOCATION_DATA',
   CLEAR_APP_DATA: 'CLEAR_APP_DATA',
 };
@@ -55,12 +56,17 @@ export const actions = {
       });
     });
   },
-  getLocationInfoBy: (dispatch, coordinate) => {
+  getLocationInfoBy: (dispatch, coordinate, locationType) => {
     dispatch({ type: Types.CLEAR_RESULTS });
+    dispatch({
+      type: Types.CLEAR_POSITION,
+      locationType
+    })
     API.GoogleMap.getLocationInfoBy(coordinate.longitude, coordinate.latitude).then((data) => {
       dispatch({
         type: Types.GET_LOCATION_BY_GEO,
         data,
+        locationType
       });
     });
   },
@@ -147,6 +153,20 @@ export const reducer = (state = InitialState, action) => {
         temporaryLocations: null,
         directionCoords: null,
       };
+    }
+    case Types.CLEAR_POSITION: {
+      if (action.locationType === 'from') {
+        return {
+          ...state,
+          fromLocation: null
+        }
+      } else  {
+        return {
+          ...state,
+          toLocation: null
+        }
+      }
+      
     }
     default: {
       return InitialState;
