@@ -20,7 +20,7 @@ Video walkthrough: [Watch on Youtube](https://www.youtube.com/watch?v=MIEnMNbXxw
 location. Then use these information to request to google direction API and receive the response,
 parse it and draw the red lines to display the routings on the map.
 - [x] [Map] Having the auto-completed address for the edit texts.
-- [ ] [Map] Click to create marks between 2 points to request and draw routing lines on the map.
+- [x] [Map] Click to create marks between 2 points to request and draw routing lines on the map.
 - [x] [Math] A text box to enter the random words separated by the comma. i.e. “shoot", “bingo”,
 “bravo”, "more", "orem", "take", "ermo", "ekat", "letter", "ttrele", "standing"
 - [x] [Math] A text area to show all pairs of anagrams in lines (an anagram is word or phrase formed
