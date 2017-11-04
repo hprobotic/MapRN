@@ -5,7 +5,7 @@ import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import { persistStore, autoRehydrate } from 'redux-persist';
 import thunk from 'redux-thunk';
 import Reactotron from 'reactotron-react-native';
-import logger from 'redux-logger'
+import logger from 'redux-logger';
 import './ReactotronConfig';
 import AppRoot from './index';
 import { reducer as LocationsReducer } from './redux/LocationsRedux';
@@ -15,16 +15,23 @@ const middleware = [
   // logger,
 ];
 
-const reducers = combineReducers({
+const appReducers = combineReducers({
   locations: LocationsReducer,
 });
 
+const rootReducer = (state, action) => {
+  if (action.type === 'CLEAR_APP_DATA') {
+    state = undefined
+  }
+  return appReducers(state, action)
+};
 
 let store = null;
 if (__DEV__) {
   store = Reactotron.createStore(
-    reducers,
-    compose(applyMiddleware(...middleware), autoRehydrate({ log: true })));
+    rootReducer,
+    compose(applyMiddleware(...middleware), autoRehydrate({ log: true }))
+);
 } else {
   store = compose(applyMiddleware(...middleware), autoRehydrate())(createStore)(reducers);
 }
@@ -36,14 +43,7 @@ persistStore(store, {
   ],
 });
 
-export default class ReduxWrapper extends Component {
-  constructor(props) {
-    super(props);
-  }
+const ReduxWrapper = () => (<Provider store={store}><AppRoot /></Provider>);
 
-  render() {
-    return (
-      <Provider store={store}><AppRoot /></Provider>
-    );
-  }
-}
+
+export default ReduxWrapper;

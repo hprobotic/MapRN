@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import {
   View,
   Text,
+  TouchableOpacity
 } from 'react-native';
 import { connect } from 'react-redux';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
@@ -24,6 +25,7 @@ import { actions as LocationActions } from '../../redux/LocationsRedux';
 
 const LATITUDE_DELTA = 0.0922
 const LONGITUDE_DELTA = 0.0421
+const DEFAULT_PADDING = { top: 40, right: 40, bottom: 40, left: 40 }
 class Map extends Component {
   static propTypes = {
     searchResultsOpen: PropTypes.bool,
@@ -33,30 +35,34 @@ class Map extends Component {
     recentLocations: PropTypes.array,
     isFetching: PropTypes.bool,
     getLocations: PropTypes.func.isRequired,
-    temporaryLocations: PropTypes.arrayOf(PropTypes.object),
     focusingOn: PropTypes.string,
-    toLocation: PropTypes.object,
-    fromLocation: PropTypes.object,
     currentLocation: PropTypes.object,
     clearLocationData: PropTypes.func,
+    handPickingLocation: PropTypes.bool,
   }
 
   state = {
+    handPickingLocation: false,
     isFetching: false,
     searchResultsOpen: false,
     fromText: '',
     destinationText: '',
-    fromLocation: {},
-    toLocation: {},
     directionCoords: [],
     locationResult: [],
     temporaryLocations: [],
     focusingOn: null,
+    fromLoc: [],
+    toLoc: [],
+    fromMarker: null,
+    toMarker: null,
   };
 
   toggleSearchResults = () => {
     const {searchResultsOpen} = this.state
-    this.setState({searchResultsOpen: !searchResultsOpen})
+    this.setState({
+      searchResultsOpen: !searchResultsOpen,
+      handPickingLocation: false
+    })
     this.props.clearLocationData()
   }
 
@@ -91,7 +97,38 @@ class Map extends Component {
     this.fetchLocations(destinationText, this.state.currentPosition)
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { toLocation, fromLocation} = nextProps
+    if (!(toLocation === null || toLocation === undefined) && this.state.handPickingLocation) {
+      this.setState({
+        destinationText: toLocation.name
+      })
+    }
+    if (!(fromLocation === null || fromLocation === undefined) && this.state.handPickingLocation) {
+      this.setState({
+        fromText: fromLocation.name
+      })
+    }
+    if (!(fromLocation === null || fromLocation === undefined)) {
+      this.setState({
+        fromMarker: {
+          longitude: fromLocation.geometry.location.lng,
+          latitude: fromLocation.geometry.location.lat,
+        }
+      })
+    }
+    if (!(toLocation === null || toLocation === undefined)) {
+      this.setState({
+        toMarker: {
+          longitude: toLocation.geometry.location.lng,
+          latitude: toLocation.geometry.location.lat,
+        }
+      })
+    }
+  }
+
   componentDidMount() {
+    this.props.clearAllLocationData()
     navigator.geolocation.getCurrentPosition(
       ({ coords }) => {
         const { latitude, longitude } = coords;
@@ -133,9 +170,10 @@ class Map extends Component {
 
   onFindDirection = () => {
     const { fromLocation, toLocation } = this.props
-    if ( _.isNull(fromLocation) || _.isNull(toLocation) ) {
+    console.log(fromLocation, toLocation);
+    if ( _.isNull(fromLocation) || _.isNull(toLocation) || _.isUndefined(fromLocation) || _.isUndefined(toLocation)) {
       alert('You should select both start and destination')
-      return
+      return false
     } else {
       const fromLatLng = `${fromLocation.geometry.location.lat}, ${fromLocation.geometry.location.lng}`
       const toLatLng = `${toLocation.geometry.location.lat}, ${toLocation.geometry.location.lng}`
@@ -143,9 +181,10 @@ class Map extends Component {
         searchResultsOpen: false
       })
       this.props.getDirection(fromLatLng, toLatLng)
+      this.fitAllMarkers(this.state.fromMarker, this.state.toMarker)
     }
   }
-
+  
   onRegionChange(region) {
     this.setState({region: region});
   }
@@ -153,6 +192,24 @@ class Map extends Component {
     this.setState({
       focusingOn: field
     })
+  }
+  onHandPickLocationFor(type) {
+    this.setState({
+      handPickingLocation: true,
+    })
+  }
+
+  onPickerDragEnd = (e) => {
+    const coordinate = e.nativeEvent.coordinate
+    this.props.getLocationInfoByGeocode(coordinate, this.state.focusingOn)
+  }
+
+  fitAllMarkers(fromMarker, toMarker) {
+    console.log(fromMarker, toMarker)
+    this.map.fitToCoordinates([fromMarker, toMarker], {
+      edgePadding: DEFAULT_PADDING,
+      animated: true,
+    });
   }
 
   fetchLocations = (text, currentPosition) => this.props.getLocations(text, currentPosition)
@@ -172,6 +229,9 @@ class Map extends Component {
       destinationText,
       region,
       currentPosition,
+      handPickingLocation,
+      fromMarker,
+      toMarker
     } = this.state;
     return (
       <View style={styles.containerView}>
@@ -189,36 +249,40 @@ class Map extends Component {
           onDestinationTextChange={this.onDestinationTextChange}
           onFindDirection={this.onFindDirection}
         />
-        <LocationSearchResults visible={searchResultsOpen}>
+        <LocationSearchResults visible={searchResultsOpen && !handPickingLocation}>
           <SearchResultsList
             list={temporaryLocations}
             onLocationSelectedAt={(id) => this.onLocationSelectedAt(id)}
+            handPickLocationFor={(locationType) => this.onHandPickLocationFor(locationType)}
           />
         </LocationSearchResults>
         <MapView
+          ref={ref => { this.map = ref; }}
           style={styles.mainMapView}
           initialRegion={region}
           onRegionChange={this.onRegionChange.bind(this)}
         >
-          {fromLocation && (
+          {(fromMarker && !handPickingLocation) && (
             <MapView.Marker
               title={fromLocation.name}
               showCallout
-              coordinate={{
-                latitude: fromLocation.geometry.location.lat,
-                longitude: fromLocation.geometry.location.lng,
-              }}
+              coordinate={fromMarker}
             />
           )}
-          {toLocation && (
+          {(toMarker  && !handPickingLocation )&& (
             <MapView.Marker
               title={toLocation.name}
               showCallout
-              coordinate={{
-                latitude: toLocation.geometry.location.lat,
-                longitude: toLocation.geometry.location.lng,
-              }}
+              coordinate={toMarker}
             />
+          )}
+          {handPickingLocation && (
+            <MapView.Marker
+            coordinate={currentPosition}
+            onDragEnd={(e) => this.onPickerDragEnd(e)}
+            draggable
+            >
+          </MapView.Marker>
           )}
           {currentPosition && (
             <MapView.Circle
@@ -242,6 +306,13 @@ class Map extends Component {
             strokeColor="red"
           />
         </MapView>
+        <View style={styles.bottomAction}>
+          <TouchableOpacity style={styles.primaryButton}>
+            <Text style={styles.primaryButtonText}>
+              DONE
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -272,6 +343,12 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     },
     clearLocationData: () => {
       LocationActions.clearLocationData(dispatch)
+    },
+    getLocationInfoByGeocode: (coordinate, locationType) => {
+      LocationActions.getLocationInfoBy(dispatch, coordinate, locationType)
+    },
+    clearAllLocationData: () => {
+      LocationActions.clearAllLocationData(dispatch)
     }
   }
 }

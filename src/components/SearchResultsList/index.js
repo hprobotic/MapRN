@@ -41,6 +41,21 @@ export default class SearchResultsList extends Component {
     )
   }
 
+  _renderFoooter = () => {
+    return (
+      <SearchResultsRow
+        title={'Set location on map'}
+        subtitle={''}
+        icon={' map-marker-plus'}
+        onPressItem={this._onPressePicker}
+        id={'-1'}
+      />
+    )
+  }
+
+  _onPressePicker = () => {
+    this.props.handPickLocationFor('to')
+  }
   _onPresseItem = (id: string) => {
     this.props.onLocationSelectedAt(id)
   }
@@ -54,6 +69,7 @@ export default class SearchResultsList extends Component {
         renderItem={this._renderItem}
         extraData={this.state}
         ItemSeparatorComponent={this._renderSeparator}
+        ListFooterComponent={this._renderFoooter}
       />
     )
   }

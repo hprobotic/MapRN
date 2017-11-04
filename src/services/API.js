@@ -17,7 +17,7 @@ const API = {
           appConfig.googleAPI.PlaceSearchPath +
           Qs.stringify(GOOGLE_PLACES_QUERY));
         const respJson = await resp.json();
-        return respJson;
+        return respJson.results;
       } catch (error) {
         return error;
       }
@@ -44,6 +44,21 @@ const API = {
         return error;
       }
     },
+    getLocationInfoBy: async (longitude, latitude) => {
+      const GOOGLE_PLACES_QUERY = {
+        key: appConfig.googleAPI.PlaceAPI,
+        latlng: `${latitude}, ${longitude}`,
+      };
+      try {
+        const resp = await fetch(appConfig.googleAPI.BaseURL +
+          appConfig.googleAPI.GeocodingPath +
+          Qs.stringify(GOOGLE_PLACES_QUERY));
+        const respJson = await resp.json();
+        return respJson.results[0];
+      } catch (error) {
+        return error;
+      }
+    }
   },
 };
 

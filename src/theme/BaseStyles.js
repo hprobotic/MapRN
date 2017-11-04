@@ -91,6 +91,18 @@ const base = {
       marginTop: 10,
       marginBottom: 10,
     },
+    primaryButton: {
+      backgroundColor: Colors.primary,
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: 4,
+    },
+    primaryButtonText: {
+      color: 'white',
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
   },
 };
 

@@ -12,6 +12,13 @@ const baseStyle = _.extend(BaseStyles.general, {
     zIndex: -1,
     backgroundColor: 'blue'
   },
+  bottomAction: {
+    position: 'absolute',
+    bottom: 10,
+    left: 10,
+    right: 10,
+    height: 40
+  }
 });
 
 export default styles = StyleSheet.create(baseStyle);

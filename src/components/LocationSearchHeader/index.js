@@ -30,17 +30,11 @@ const SQUARE_SIZE = 6
 class LocationSearchHeader extends Component {
   constructor(props) {
     super(props)
-    this.state = ({
-      startPlaces: [],
-      destinationPlaces: []
-    })
   }
   static defaultProps = {
     expanded: false,
     onFromTextChange: () => {},
     onDestinationTextChange: () => {},
-    fromText: '',
-    destinationText: '',
     focusedOn: null
   }
 
