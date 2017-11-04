@@ -20,7 +20,8 @@ const baseStyle = _.extend(BaseStyles.general, {
     height: 40,
   },
   draggablePicker: {
-    zIndex: 90
+    zIndex: 90,
+    opacity: 0,
   },
 });
 

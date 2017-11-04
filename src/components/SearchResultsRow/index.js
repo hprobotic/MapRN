@@ -13,22 +13,24 @@ export default class SearchResultsRow extends Component {
     icon: 'home',
     title: 'Home',
     subtitle: 'Earth',
-    id: 'id'
+    id: 'id',
+    customStyle: {}
   }
   _onPress = () => {
     this.props.onPressItem(this.props.id);
   }
 
   render() {
-    const {title, subtitle} = this.props
+    const {title, subtitle, icon, customStyle} = this.props
+    console.log(this.props);
     return (
       <TouchableOpacity
-        style={styles.container}
+        style={[styles.container, customStyle]}
         onPress={this._onPress}
       >
         <View style={styles.iconContainer}>
           <Icon
-            name={"map-marker-outline"}
+            name={icon}
             style={styles.icon}
           />
         </View>

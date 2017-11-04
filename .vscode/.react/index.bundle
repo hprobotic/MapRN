@@ -81104,7 +81104,8 @@ var Map = _wrapComponent('Map')((_temp2 = _class = function (_Component) {
         handPickingLocation: false,
         fromText: '',
         toText: '',
-        focusing: 'fromTextInput'
+        focusing: 'fromTextInput',
+        pickingMarker: {}
       });
       _this.props.clearAllLocationData();
     }, _this.toggleNavButton = function () {
@@ -81118,7 +81119,8 @@ var Map = _wrapComponent('Map')((_temp2 = _class = function (_Component) {
     }, _this.onFromTextChange = function (fromText) {
       _this.setState({
         fromText: fromText,
-        focusingOn: 'from'
+        focusingOn: 'from',
+        handPickingLocation: false
       });
       if (fromText.length === 0) {
         _this.props.clearLocationData();
@@ -81127,7 +81129,8 @@ var Map = _wrapComponent('Map')((_temp2 = _class = function (_Component) {
     }, _this.onToTextChange = function (toText) {
       _this.setState({
         toText: toText,
-        focusingOn: 'to'
+        focusingOn: 'to',
+        handPickingLocation: false
       });
       if (toText.length === 0) {
         _this.props.clearLocationData();
@@ -81329,7 +81332,7 @@ var Map = _wrapComponent('Map')((_temp2 = _class = function (_Component) {
         _reactNative.View,
         { style: _styles2.default.containerView, __source: {
             fileName: _jsxFileName,
-            lineNumber: 281
+            lineNumber: 284
           }
         },
         _react3.default.createElement(_appComponents.NavIcon, {
@@ -81337,7 +81340,7 @@ var Map = _wrapComponent('Map')((_temp2 = _class = function (_Component) {
           onPress: this.toggleNavButton,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 282
+            lineNumber: 285
           }
         }),
         _react3.default.createElement(_appComponents.LocationSearchHeader, {
@@ -81352,14 +81355,14 @@ var Map = _wrapComponent('Map')((_temp2 = _class = function (_Component) {
           onFindDirection: this.onFindDirection,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 286
+            lineNumber: 289
           }
         }),
         _react3.default.createElement(
           _appComponents.LocationSearchResults,
           { visible: searchResultsOpen && !handPickingLocation, __source: {
               fileName: _jsxFileName,
-              lineNumber: 297
+              lineNumber: 300
             }
           },
           _react3.default.createElement(_appComponents.SearchResultsList, {
@@ -81372,7 +81375,7 @@ var Map = _wrapComponent('Map')((_temp2 = _class = function (_Component) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 298
+              lineNumber: 301
             }
           })
         ),
@@ -81387,7 +81390,7 @@ var Map = _wrapComponent('Map')((_temp2 = _class = function (_Component) {
             onPress: this.onMapPress.bind(this),
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 304
+              lineNumber: 307
             }
           },
           fromMarker && _react3.default.createElement(_reactNativeMaps2.default.Marker, {
@@ -81396,7 +81399,7 @@ var Map = _wrapComponent('Map')((_temp2 = _class = function (_Component) {
             coordinate: fromMarker,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 311
+              lineNumber: 314
             }
           }),
           toMarker && _react3.default.createElement(_reactNativeMaps2.default.Marker, {
@@ -81405,7 +81408,7 @@ var Map = _wrapComponent('Map')((_temp2 = _class = function (_Component) {
             coordinate: toMarker,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 318
+              lineNumber: 321
             }
           }),
           pickingMarker && _react3.default.createElement(_reactNativeMaps2.default.Marker, {
@@ -81417,7 +81420,7 @@ var Map = _wrapComponent('Map')((_temp2 = _class = function (_Component) {
             style: _styles2.default.draggablePicker,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 325
+              lineNumber: 328
             }
           }),
           currentUserPosition && _react3.default.createElement(_reactNativeMaps2.default.Circle, {
@@ -81427,7 +81430,7 @@ var Map = _wrapComponent('Map')((_temp2 = _class = function (_Component) {
             fillColor: '#3D9FC6',
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 334
+              lineNumber: 337
             }
           }),
           currentUserPosition && _react3.default.createElement(_reactNativeMaps2.default.Circle, {
@@ -81437,7 +81440,7 @@ var Map = _wrapComponent('Map')((_temp2 = _class = function (_Component) {
             fillColor: 'rgba(61,159,198,0.30)',
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 342
+              lineNumber: 345
             }
           }),
           _react3.default.createElement(_reactNativeMaps2.default.Polyline, {
@@ -81446,7 +81449,7 @@ var Map = _wrapComponent('Map')((_temp2 = _class = function (_Component) {
             strokeColor: 'red',
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 349
+              lineNumber: 352
             }
           })
         ),
@@ -81454,14 +81457,14 @@ var Map = _wrapComponent('Map')((_temp2 = _class = function (_Component) {
           _reactNative.TouchableOpacity,
           { style: _styles2.default.toolTip, onPress: this.hideTip.bind(this), __source: {
               fileName: _jsxFileName,
-              lineNumber: 356
+              lineNumber: 359
             }
           },
           _react3.default.createElement(
             _reactNative.Text,
             { style: _styles2.default.toolTipText, __source: {
                 fileName: _jsxFileName,
-                lineNumber: 357
+                lineNumber: 360
               }
             },
             'Press on map screen to pick a location | DISMISS'
@@ -92724,6 +92727,8 @@ var _reactotronReactNative = require(534                      ); // 534 = reacto
 
 var _reactotronReactNative2 = _interopRequireDefault(_reactotronReactNative);
 
+var _appTheme = require(965       ); // 965 = appTheme
+
 var _SearchResultsRow = require(972                  ); // 972 = ../SearchResultsRow
 
 var _SearchResultsRow2 = _interopRequireDefault(_SearchResultsRow);
@@ -92781,37 +92786,40 @@ var SearchResultsList = _wrapComponent('SearchResultsList')(function (_Component
         style: styles.separator,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 24
+          lineNumber: 25
         }
       });
     }, _this._renderItem = function (_ref2) {
       var item = _ref2.item;
       var name = item.name,
           vicinity = item.vicinity,
-          icon = item.icon,
           id = item.id;
 
       return _react3.default.createElement(_SearchResultsRow2.default, {
         title: name,
+        icon: 'map-marker',
         subtitle: vicinity,
-        icon: icon,
         onPressItem: _this._onPresseItem,
         id: id,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 34
+          lineNumber: 35
         }
       });
-    }, _this._renderFoooter = function () {
+    }, _this._renderHeader = function () {
       return _react3.default.createElement(_SearchResultsRow2.default, {
         title: 'Set location on map',
         subtitle: '',
-        icon: ' map-marker-plus',
+        icon: 'map-marker-plus',
         onPressItem: _this._onPressePicker,
         id: '-1',
+        customStyle: {
+          borderBottomWidth: 0.5,
+          borderBottomColor: _appTheme.Colors.primary
+        },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 46
+          lineNumber: 47
         }
       });
     }, _this._onPressePicker = function () {
@@ -92832,10 +92840,10 @@ var SearchResultsList = _wrapComponent('SearchResultsList')(function (_Component
         renderItem: this._renderItem,
         extraData: this.state,
         ItemSeparatorComponent: this._renderSeparator,
-        ListFooterComponent: this._renderFoooter,
+        ListHeaderComponent: this._renderHeader,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 66
+          lineNumber: 71
         }
       });
     }
@@ -92938,31 +92946,34 @@ var SearchResultsRow = _wrapComponent('SearchResultsRow')((_temp2 = _class = fun
     value: function render() {
       var _props = this.props,
           title = _props.title,
-          subtitle = _props.subtitle;
+          subtitle = _props.subtitle,
+          icon = _props.icon,
+          customStyle = _props.customStyle;
 
+      console.log(this.props);
       return _react3.default.createElement(
         _reactNative.TouchableOpacity,
         {
-          style: styles.container,
+          style: [styles.container, customStyle],
           onPress: this._onPress,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 25
+            lineNumber: 27
           }
         },
         _react3.default.createElement(
           _reactNative.View,
           { style: styles.iconContainer, __source: {
               fileName: _jsxFileName,
-              lineNumber: 29
+              lineNumber: 31
             }
           },
           _react3.default.createElement(_MaterialCommunityIcons2.default, {
-            name: "map-marker-outline",
+            name: icon,
             style: styles.icon,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 30
+              lineNumber: 32
             }
           })
         ),
@@ -92970,14 +92981,14 @@ var SearchResultsRow = _wrapComponent('SearchResultsRow')((_temp2 = _class = fun
           _reactNative.View,
           { style: styles.textContainer, __source: {
               fileName: _jsxFileName,
-              lineNumber: 35
+              lineNumber: 37
             }
           },
           _react3.default.createElement(
             _reactNative.Text,
             { style: styles.title, __source: {
                 fileName: _jsxFileName,
-                lineNumber: 36
+                lineNumber: 38
               }
             },
             title
@@ -92986,7 +92997,7 @@ var SearchResultsRow = _wrapComponent('SearchResultsRow')((_temp2 = _class = fun
             _reactNative.Text,
             { style: styles.subtitle, __source: {
                 fileName: _jsxFileName,
-                lineNumber: 39
+                lineNumber: 41
               }
             },
             subtitle
@@ -93001,7 +93012,8 @@ var SearchResultsRow = _wrapComponent('SearchResultsRow')((_temp2 = _class = fun
   icon: 'home',
   title: 'Home',
   subtitle: 'Earth',
-  id: 'id'
+  id: 'id',
+  customStyle: {}
 }, _temp2));
 
 exports.default = SearchResultsRow;
@@ -97685,7 +97697,8 @@ var baseStyle = _lodash2.default.extend(_appTheme.BaseStyles.general, {
     height: 40
   },
   draggablePicker: {
-    zIndex: 90
+    zIndex: 90,
+    opacity: 0
   }
 });
 

@@ -69,6 +69,7 @@ class Map extends Component {
       fromText: '',
       toText: '',
       focusing: 'fromTextInput',
+      pickingMarker: {},
     })
     this.props.clearAllLocationData()
   }
@@ -85,7 +86,8 @@ class Map extends Component {
   onFromTextChange = (fromText) => {
     this.setState({
       fromText,
-      focusingOn: 'from'
+      focusingOn: 'from',
+      handPickingLocation: false
     })
     if (fromText.length === 0) {
       this.props.clearLocationData()
@@ -96,7 +98,8 @@ class Map extends Component {
   onToTextChange = (toText) => {
     this.setState({
       toText,
-      focusingOn: 'to'
+      focusingOn: 'to',
+      handPickingLocation: false
     })
     if (toText.length === 0) {
       this.props.clearLocationData()

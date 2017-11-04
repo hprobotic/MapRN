@@ -8,6 +8,7 @@ import {
   Text,
   StyleSheet } from 'react-native'
 import Reactotron from 'reactotron-react-native';
+import { Colors } from 'appTheme';
 import SearchResultsRow from '../SearchResultsRow'
 
 export default class SearchResultsList extends Component {
@@ -29,26 +30,30 @@ export default class SearchResultsList extends Component {
   }
 
   _renderItem = ({ item }) => {
-    const {name, vicinity, icon, id} = item
+    const {name, vicinity, id} = item
     return (
       <SearchResultsRow
         title={name}
+        icon={'map-marker'}
         subtitle={vicinity}
-        icon={icon}
         onPressItem={this._onPresseItem}
         id={id}
       />
     )
   }
 
-  _renderFoooter = () => {
+  _renderHeader = () => {
     return (
       <SearchResultsRow
         title={'Set location on map'}
         subtitle={''}
-        icon={' map-marker-plus'}
+        icon={'map-marker-plus'}
         onPressItem={this._onPressePicker}
         id={'-1'}
+        customStyle={{
+          borderBottomWidth: 0.5, 
+          borderBottomColor: Colors.primary,
+        }}
       />
     )
   }
@@ -69,7 +74,7 @@ export default class SearchResultsList extends Component {
         renderItem={this._renderItem}
         extraData={this.state}
         ItemSeparatorComponent={this._renderSeparator}
-        ListFooterComponent={this._renderFoooter}
+        ListHeaderComponent={this._renderHeader}
       />
     )
   }
