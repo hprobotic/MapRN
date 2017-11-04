@@ -103,6 +103,22 @@ const base = {
       fontWeight: 'bold',
       textAlign: 'center',
     },
+    toolTip: {
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      height: 40,
+      padding: 5,
+      paddingLeft: 16,
+      paddingRight: 16,
+      backgroundColor: 'green'
+    },
+    toolTipText: {
+      flex: 1,
+      fontSize: 12,
+      color: 'white'
+    },
   },
 };
 

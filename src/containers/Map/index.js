@@ -58,6 +58,7 @@ class Map extends Component {
     fromMarker: null,
     toMarker: null,
     pickingMarker: {},
+    isShowTip: true
   };
 
   toggleSearchResults = () => {
@@ -186,7 +187,6 @@ class Map extends Component {
 
   onFindDirection = () => {
     const { fromLocation, toLocation } = this.props
-    console.log(fromLocation, toLocation);
     if ( _.isNull(fromLocation) || _.isNull(toLocation) || _.isUndefined(fromLocation) || _.isUndefined(toLocation)) {
       alert('You should select both start and to')
       return false
@@ -228,7 +228,6 @@ class Map extends Component {
   }
 
   fitAllMarkers(fromMarker, toMarker) {
-    console.log(fromMarker, toMarker)
     this.map.fitToCoordinates([fromMarker, toMarker], {
       edgePadding: DEFAULT_PADDING,
       animated: true,
@@ -247,6 +246,11 @@ class Map extends Component {
         focusing: 'toInput'
       })
     }
+  }
+  hideTip(){
+    this.setState({
+      isShowTip: false
+    })
   }
 
   fetchLocations = (text, currentUserPosition) => this.props.getLocations(text, currentUserPosition)
@@ -270,9 +274,9 @@ class Map extends Component {
       fromMarker,
       toMarker,
       centerOfMapView,
-      pickingMarker
+      pickingMarker,
+      isShowTip
     } = this.state;
-    console.log(pickingMarker);
     return (
       <View style={styles.containerView}>
         <NavIcon
@@ -348,6 +352,13 @@ class Map extends Component {
             strokeColor="red"
           />
         </MapView>
+        {(isShowTip && handPickingLocation) && (
+          <TouchableOpacity style={styles.toolTip} onPress={this.hideTip.bind(this)}>
+            <Text style={styles.toolTipText}>
+              Press on map screen to pick a location | DISMISS
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     );
   }
